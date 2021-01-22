@@ -1,14 +1,14 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from rango.models import Category
 
 def index(request):
-    # Construct a dictionay to pass the template engine as its context
-    # Note the key boldmessage matches to {{ boldmessage }} ub the template
-    context_dict = {"boldmessage": "Crunchy, creamy, cookie, candy, cupcake!"}
+    category_list = Category.objects.order_by('-likes')[:5]
 
-    # Return a rendered response to send to the client
-    # We make use of the shortcut function to make our lives easier
-    # The first parameter is the template that we wish to use
+    context_dict = {}
+    context_dict['boldmessage'] = 'Crunchy, creamy, cookie, candy, cupcake!'
+    context_dict['categories'] = category_list
+    
     return render(request, 'rango/index.html', context=context_dict)
 
 def about(request):
